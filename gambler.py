@@ -5,6 +5,7 @@ import sqlite3
 import json
 import logging
 import os
+import random
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -223,7 +224,7 @@ async def process_death(channel, deceased_player):
         conn.close()
         return
 
-    pot_size = len(all_bets) * 10
+    pot_size = len(all_bets) * 10 + 10 + random.randint(5, 10)
     if winners:
         winnings_per_winner = pot_size // len(winners)
         winner_mentions = []
