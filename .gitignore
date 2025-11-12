@@ -1,0 +1,7 @@
+*.pid
+*.out
+*.err
+.env
+*.db
+users.json
+gambler-venv/*
