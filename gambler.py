@@ -148,14 +148,7 @@ async def vote(interaction: discord.Interaction, player: str):
         conn.close()
         return
 
-    # Debit 10 tokens and register the vote
-    cursor.execute("SELECT tokens FROM users WHERE discord_id = ?", (discord_id,))
-    tokens_row = cursor.fetchone()
-    if not tokens_row or tokens_row[0] < 10:
-        await interaction.response.send_message("You don't have enough tokens (10 required) to vote.", ephemeral=True)
-        conn.close()
-        return
-
+    # Debit 10 tokens and register the vote (balance may go negative)
     cursor.execute("UPDATE users SET tokens = tokens - 10 WHERE discord_id = ?", (discord_id,))
     cursor.execute("REPLACE INTO bets (user_id, voted_for, voted_for_display) VALUES (?, ?, ?)", (discord_id, guess, player.strip()))
     conn.commit()
